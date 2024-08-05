@@ -1,0 +1,81 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+  
+    color-scheme: dark light;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+  
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    place-content: center;
+  }
+  
+  section {
+    position: absolute;
+    background: rgb(0, 0, 0);
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    inset: 0;
+    display: grid;
+    font-size: 48px;
+    place-content: center;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh
+  }
+
+  .appPaused {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    z-index: 5;
+    background-color: rgb(56, 56, 56);
+    width: 300px;
+    height: 40px;
+    border: solid rgb(196, 196, 196) 2px;
+    border-radius: 15%;
+    text-align: center;
+    box-shadow: 0 0px 10px white;
+  }
+
+  strong {
+  margin-top: 20px;
+  }
+  
+  .titulo {
+  position: absolute;
+  font-size: 50px;
+  font-family: Arial, Helvetica, sans-serif;
+  left: 10%;
+  top: 0px;
+  color: white;
+  text-shadow: 
+  2px 2px 0 #464646,
+    2px 2px 0 #97eb49,   /* Primera sombra, más cercana al texto */
+    4px 4px 0 #ffd13a,   /* Segunda sombra, un poco más lejos */
+    6px 6px 0 #ff1717; 
+  }
+
+  
