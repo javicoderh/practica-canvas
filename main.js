@@ -1,44 +1,35 @@
 import './style.css'
 import { BLOCK_SIZE, PIECES, BOARD_WIDTH, BOARD_HEIGHT, EVENT_MOVEMENTS } from './consts'
 
-// 1. inicializar el canvas
 const canvas = document.querySelector('canvas')
 const context = canvas.getContext('2d')
 const $score = document.querySelector('span')
 const $section = document.querySelector('section')
 const app = document.querySelector('app')
-//const audio = new window.Audio('./public_tetris.mp3')
-//audio.loop = true;
-//audio.play();
+const botonPausa = document.getElementById('botonPausa')
+const audio = new window.Audio('./public_tetris.mp3')
+audio.loop = true;
+audio.volume = 0.4
+audio.play();
+
 const pausedMessage = document.createElement('h2');
 
-// Establecer el texto interior
+
 pausedMessage.textContent = 'Juego Pausado';
-
-// Asignar la clase CSS (puedes definir estilos en tu CSS para esta clase)
 pausedMessage.className = 'appPaused';
-
-// Establecer estilos iniciales (opcional, para ocultar el mensaje por defecto)
 pausedMessage.style.position = 'absolute';
-pausedMessage.style.top = '200px'; // Ajusta la posición según sea necesario
+pausedMessage.style.top = '200px'; 
 pausedMessage.style.left = '50%';
 pausedMessage.style.transform = 'translateX(-50%)';
 pausedMessage.style.color = 'white';
-pausedMessage.style.display = 'none'; // Ocultar el mensaje inicialmente
-
-// Agregar el elemento al <body>
+pausedMessage.style.display = 'none'; 
 document.body.appendChild(pausedMessage);
 
 let score = 0
 
 canvas.width = BLOCK_SIZE * BOARD_WIDTH
 canvas.height = BLOCK_SIZE * BOARD_HEIGHT
-
 context.scale(BLOCK_SIZE, BLOCK_SIZE)
-
-// 3. board
-// const board = createBoard(BOARD_WIDTH, BOARD_HEIGHT)
-
 const board = [
   [
     0, 0, 0, 0, 0, 0,
@@ -196,7 +187,6 @@ function createBoard (width, height) {
   return Array(height).fill().map(() => Array(width).fill(0))
 }
 
-// 4. pieza player
 const piece = {
   position: { x: 5, y: 5 },
   shape: [
@@ -205,27 +195,20 @@ const piece = {
   ]
 }
 
-// 2. game loop
-// function update () {
-//   draw()
-//   window.requestAnimationFrame(update)
-// }
-
-// 8. auto drop
 let dropCounter = 0;
 let lastTime = 0;
 let isPaused = false;
 
 function update(time = 0) {
   if (isPaused) {
-    pausedMessage.style.display = 'block'; // Mostrar mensaje
-    draw(); // Llamar a draw para actualizar el estado visual cuando esté en pausa
+    pausedMessage.style.display = 'block'; 
+    draw(); 
     requestAnimationFrame(update);
     audio.pause();
     return;
   }
-  //audio.play();
-  pausedMessage.style.display = 'none'; // Ocultar mensaje
+  
+  pausedMessage.style.display = 'none'; 
 
   const deltaTime = time - lastTime;
   lastTime = time;
@@ -248,13 +231,13 @@ function update(time = 0) {
 }
 
 function draw() {
-  // Limpia el canvas
+  
   context.fillStyle = '#000';
   context.fillRect(0, 0, canvas.width, canvas.height);
-  const blockSize = 1; // Tamaño de cada celda en píxeles
-  const borderWidth = blockSize * 0.2; // Ancho del borde (20% del tamaño del bloque)
+  const blockSize = 1; 
+  const borderWidth = blockSize * 0.2;
   const innerSize = blockSize - borderWidth;
-  const radius = blockSize * 0.05; // Radio del borde redondeado (5% del tamaño del bloque)
+  const radius = blockSize * 0.05; 
 
   function drawRoundedRect(x, y, width, height, radius) {
     context.beginPath();
@@ -267,16 +250,14 @@ function draw() {
     context.stroke();
     context.fill();
   }
-  // Dibuja el tablero
+  
   board.forEach((row, y) => {
     row.forEach((value, x) => {
       if (value === 1) {
-        context.strokeStyle = 'white'; // Color del borde
+        context.strokeStyle = 'white'; 
         context.lineWidth = borderWidth;
         context.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
-
-        // Dibuja el centro del bloque
-        context.fillStyle = 'lightBlue'; // Color del centro
+        context.fillStyle = 'lightBlue'; 
         context.fillRect(x * blockSize + borderWidth / 2, 
                          y * blockSize + borderWidth / 2, 
                          innerSize, 
@@ -291,16 +272,12 @@ function draw() {
       row.forEach((value, x) => {
         if (value) {
         const px = x + piece.position.x;
-        const py = y + piece.position.y;
-        
-        // Dibuja el borde redondeado
-        context.strokeStyle = 'orange'; // Color del borde
+        const py = y + piece.position.y;               
+        context.strokeStyle = 'orange'; 
         context.lineWidth = borderWidth;
-        context.fillStyle = 'transparent'; // Fondo transparente para el borde
-        drawRoundedRect(px, py, blockSize, blockSize, radius);
-
-        // Dibuja el centro redondeado
-        context.fillStyle = 'red'; // Color del centro
+        context.fillStyle = 'transparent'; 
+        drawRoundedRect(px, py, blockSize, blockSize, radius);        
+        context.fillStyle = 'red'; 
         const innerX = px + borderWidth / 2;
         const innerY = py + borderWidth / 2;
         drawRoundedRect(innerX, innerY, innerSize, innerSize, radius);
@@ -309,31 +286,23 @@ function draw() {
     });
 
 
-  // Muestra la puntuación
   $score.innerText = score;
 }
 
-// Listener para detectar teclas
 document.addEventListener('keydown', event => {
   if (isPaused) {
     const pausedMessage = document.createElement('h2');
-
-    // Establecer el texto interior
     pausedMessage.textContent = 'Juego Pausado';
-    
-    // Asignar la clase CSS (puedes definir estilos en tu CSS para esta clase)
     pausedMessage.className = 'appPaused';
-    
-    // Establecer estilos iniciales (opcional, para ocultar el mensaje por defecto)
     pausedMessage.style.position = 'absolute';
-    pausedMessage.style.top = '10px'; // Ajusta la posición según sea necesario
+    pausedMessage.style.top = '10px'; 
     pausedMessage.style.left = '50%';
     pausedMessage.style.transform = 'translateX(-50%)';
     pausedMessage.style.color = 'white';
     pausedMessage.style.fontSize = '24px';
-    pausedMessage.style.display = 'none'; // Ocultar el mensaje inicialmente
+    pausedMessage.style.display = 'none'; 
     
-    // Agregar el elemento al <body>
+    
     document.body.appendChild(pausedMessage);
   }
   
@@ -382,14 +351,14 @@ document.addEventListener('keydown', event => {
   }
 });
 
-// Listener para la tecla de pausa 'P'
+
 document.addEventListener('keydown', event => {
   if (event.key === 'p' || event.key === 'P') {
     isPaused = !isPaused;
   }
 });
 
-// Iniciar el bucle del juego
+
 requestAnimationFrame(update);
 
 function checkCollision () {
@@ -417,10 +386,8 @@ function solidifyPiece () {
 
 function resetPiece () {
   piece.position.x = Math.floor(BOARD_WIDTH / 2 - 2)
-  piece.position.y = 0
-  // get random shape
+  piece.position.y = 0  
   piece.shape = PIECES[Math.floor(Math.random() * PIECES.length)]
-  // gameover
   if (checkCollision()) {
     window.alert('Game over!! Sorry!')
     board.forEach((row) => row.fill(0))
@@ -445,9 +412,14 @@ function removeRows () {
   })
 }
 
+botonPausa.addEventListener('click', () => {
+  isPaused = !isPaused
+  audio.play();
+})
+
 $section.addEventListener('click', () => {
   update()
   $section.remove()
-  audio.volume = 0.01
+  audio.volume = 0.4
   audio.play()
 })
