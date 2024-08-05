@@ -35,14 +35,6 @@
     justify-content: center;
   }
 
-  .app {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh
-  }
-
   .appPaused {
     padding: 15px;
     display: flex;

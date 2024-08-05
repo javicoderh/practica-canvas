@@ -3,6 +3,9 @@ import { BLOCK_SIZE, PIECES, BOARD_WIDTH, BOARD_HEIGHT, EVENT_MOVEMENTS } from '
 
 const canvas = document.querySelector('canvas')
 const context = canvas.getContext('2d')
+const botonIzquierda = document.getElementById('izquierda')
+const botonAbajo = document.getElementById('abajo')
+const botonDerecha = document.getElementById('derecha')
 const $score = document.querySelector('span')
 const $section = document.querySelector('section')
 const app = document.querySelector('app')
@@ -26,6 +29,52 @@ pausedMessage.style.display = 'none';
 document.body.appendChild(pausedMessage);
 
 let score = 0
+
+document.addEventListener('DOMContentLoaded', () => {
+  const swipeArea = document.getElementById('swipeArea');
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  // Detectar el inicio del toque
+  swipeArea.addEventListener('touchstart', (event) => {
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.tTouches[0].clientY;
+  });
+
+  // Detectar el final del toque
+  swipeArea.addEventListener('touchend', (event) => {
+    const touchEndX = event.changedTouches[0].clientX;
+    const touchEndY = event.changedTouches[0].clientY;
+    const deltaX = touchStartX - touchEndX;
+    const deltaY = touchStartY - touchEndY;
+
+    // Deslizamiento hacia la izquierda
+    if (deltaX > 50 && Math.abs(deltaY) < 50) { // Ajusta los umbrales según sea necesario
+      piece.position.x--;
+      if (checkCollision()) {
+        piece.position.x++;
+      }
+    }
+
+    // Deslizamiento hacia la derecha
+    if (deltaX < -50 && Math.abs(deltaY) < 50) {
+      piece.position.x++;
+      if (checkCollision()) {
+        piece.position.x--;
+      }
+    }
+
+    // Deslizamiento hacia abajo
+    if (deltaY < -50 && Math.abs(deltaX) < 50) {
+      piece.position.y++;
+      if (checkCollision()) {
+        piece.position.y--;
+        solidifyPiece();
+        removeRows();
+      }
+    }
+  });
+});
 
 canvas.width = BLOCK_SIZE * BOARD_WIDTH
 canvas.height = BLOCK_SIZE * BOARD_HEIGHT
@@ -288,6 +337,8 @@ function draw() {
 
   $score.innerText = score;
 }
+
+
 
 document.addEventListener('keydown', event => {
   if (isPaused) {
