@@ -78,6 +78,10 @@
     6px 6px 0 #ff1717; 
   }
 
+  .controles {
+    transform: scale(0.6);
+  }
+
   .controles button {
     margin: 40px;
     background-color: transparent;
