@@ -35,6 +35,36 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+
+
+botonRotar.addEventListener('click', () => {
+  rotarPieza();
+});
+
+function rotarPieza() {
+  const rotated = [];
+
+  // Rotar la matriz de la pieza
+  for (let i = 0; i < piece.shape[0].length; i++) {
+    const row = [];
+
+    for (let j = piece.shape.length - 1; j >= 0; j--) {
+      row.push(piece.shape[j][i]);
+    }
+
+    rotated.push(row);
+  }
+
+  // Guardar la forma anterior para comprobar colisiones
+  const previousShape = piece.shape;
+  piece.shape = rotated;
+
+  // Si hay colisión, revertir la rotación
+  if (checkCollision()) {
+    piece.shape = previousShape;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const moveRightButton = document.getElementById('derecha');
   
