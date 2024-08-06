@@ -3,7 +3,8 @@ import { BLOCK_SIZE, PIECES, BOARD_WIDTH, BOARD_HEIGHT, EVENT_MOVEMENTS } from '
 
 const canvas = document.querySelector('canvas')
 const context = canvas.getContext('2d')
-
+const controles = document.getElementById('controles')
+controles.style.display = 'none'
 const botonIzquierda = document.getElementById('izquierda')
 const botonAbajo = document.getElementById('abajo')
 const botonDerecha = document.getElementById('derecha')
@@ -463,6 +464,7 @@ botonPausa.addEventListener('click', () => {
 $section.addEventListener('click', () => {
   update()
   $section.remove()
+  controles.style.display = 'flex'
   audio.volume = 0.4
   audio.play()
 })

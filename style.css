@@ -79,6 +79,7 @@
   }
 
   .controles {
+    flex-direction: row;
     transform: scale(0.6);
   }
 
