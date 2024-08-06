@@ -35,6 +35,14 @@
     justify-content: center;
   }
 
+  .app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh
+  }
+
   .appPaused {
     padding: 15px;
     display: flex;
@@ -68,6 +76,16 @@
     2px 2px 0 #97eb49,   /* Primera sombra, más cercana al texto */
     4px 4px 0 #ffd13a,   /* Segunda sombra, un poco más lejos */
     6px 6px 0 #ff1717; 
+  }
+
+  .controles button {
+    margin: 40px;
+    background-color: transparent;
+  }
+
+  .controles button img {
+  border-radius: 50%;
+  background-color: transparent;
   }
 
   

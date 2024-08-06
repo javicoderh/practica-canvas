@@ -3,6 +3,7 @@ import { BLOCK_SIZE, PIECES, BOARD_WIDTH, BOARD_HEIGHT, EVENT_MOVEMENTS } from '
 
 const canvas = document.querySelector('canvas')
 const context = canvas.getContext('2d')
+
 const botonIzquierda = document.getElementById('izquierda')
 const botonAbajo = document.getElementById('abajo')
 const botonDerecha = document.getElementById('derecha')
@@ -14,9 +15,43 @@ const audio = new window.Audio('./public_tetris.mp3')
 audio.loop = true;
 audio.volume = 0.4
 audio.play();
+let velocidadX = 1;
+let velocidadY = 1;
+let friccion = 0.95
 
 const pausedMessage = document.createElement('h2');
+document.addEventListener('DOMContentLoaded', () => {
+  const moveLeftButton = document.getElementById('izquierda');
+  
+  moveLeftButton.addEventListener('click', () => {
+    piece.position.x--;
+    if (checkCollision()) {
+      piece.position.x++;
+    }
+  });
+});
 
+document.addEventListener('DOMContentLoaded', () => {
+  const moveRightButton = document.getElementById('derecha');
+  
+  moveRightButton.addEventListener('click', () => {
+    piece.position.x++;
+    if (checkCollision()) {
+      piece.position.x--;
+    }
+  });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const moveDownButton = document.getElementById('abajo');
+  
+  moveDownButton.addEventListener('click', () => {
+    piece.position.y++;
+    if (checkCollision()) {
+      piece.position.y--;
+    }
+  });
+});
 
 pausedMessage.textContent = 'Juego Pausado';
 pausedMessage.className = 'appPaused';
@@ -29,52 +64,6 @@ pausedMessage.style.display = 'none';
 document.body.appendChild(pausedMessage);
 
 let score = 0
-
-document.addEventListener('DOMContentLoaded', () => {
-  const swipeArea = document.getElementById('swipeArea');
-  let touchStartX = 0;
-  let touchStartY = 0;
-
-  // Detectar el inicio del toque
-  swipeArea.addEventListener('touchstart', (event) => {
-    touchStartX = event.touches[0].clientX;
-    touchStartY = event.tTouches[0].clientY;
-  });
-
-  // Detectar el final del toque
-  swipeArea.addEventListener('touchend', (event) => {
-    const touchEndX = event.changedTouches[0].clientX;
-    const touchEndY = event.changedTouches[0].clientY;
-    const deltaX = touchStartX - touchEndX;
-    const deltaY = touchStartY - touchEndY;
-
-    // Deslizamiento hacia la izquierda
-    if (deltaX > 50 && Math.abs(deltaY) < 50) { // Ajusta los umbrales según sea necesario
-      piece.position.x--;
-      if (checkCollision()) {
-        piece.position.x++;
-      }
-    }
-
-    // Deslizamiento hacia la derecha
-    if (deltaX < -50 && Math.abs(deltaY) < 50) {
-      piece.position.x++;
-      if (checkCollision()) {
-        piece.position.x--;
-      }
-    }
-
-    // Deslizamiento hacia abajo
-    if (deltaY < -50 && Math.abs(deltaX) < 50) {
-      piece.position.y++;
-      if (checkCollision()) {
-        piece.position.y--;
-        solidifyPiece();
-        removeRows();
-      }
-    }
-  });
-});
 
 canvas.width = BLOCK_SIZE * BOARD_WIDTH
 canvas.height = BLOCK_SIZE * BOARD_HEIGHT
@@ -249,6 +238,9 @@ let lastTime = 0;
 let isPaused = false;
 
 function update(time = 0) {
+  velocidadX *= friccion;
+  velocidadY *= friccion;
+
   if (isPaused) {
     pausedMessage.style.display = 'block'; 
     draw(); 
