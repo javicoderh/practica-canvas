@@ -12,6 +12,9 @@ const $score = document.querySelector('span')
 const $section = document.querySelector('section')
 const app = document.querySelector('app')
 const botonPausa = document.getElementById('botonPausa')
+botonPausa.style.display = 'none'
+const botonRotar = document.getElementById('rotar')
+botonRotar.style.display = 'none'
 const audio = new window.Audio('./public_tetris.mp3')
 audio.loop = true;
 audio.volume = 0.4
@@ -465,6 +468,8 @@ $section.addEventListener('click', () => {
   update()
   $section.remove()
   controles.style.display = 'flex'
+  botonPausa.style.display = 'block'
+  botonRotar.style.display = 'block'
   audio.volume = 0.4
   audio.play()
 })
