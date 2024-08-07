@@ -290,7 +290,7 @@ function update(time = 0) {
 
   dropCounter += deltaTime;
 
-  if (dropCounter > 1000) {
+  if (dropCounter > 100) {
     piece.position.y++;
     dropCounter = 0;
 
