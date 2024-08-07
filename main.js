@@ -290,7 +290,7 @@ function update(time = 0) {
 
   dropCounter += deltaTime;
 
-  if (dropCounter > 200) {
+  if (dropCounter > 150) {
     piece.position.y++;
     dropCounter = 0;
 
@@ -402,8 +402,8 @@ document.addEventListener('keydown', event => {
     piece.position.y++;
     if (checkCollision()) {
       piece.position.y--;
-      solidifyPiece();
-      removeRows();
+        solidifyPiece();
+        removeRows();
     }
   }
 
@@ -450,7 +450,6 @@ function checkCollision () {
 }
 
 function solidifyPiece() {
-  setTimeout(() => {
     piece.shape.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value === 1) {
@@ -460,7 +459,7 @@ function solidifyPiece() {
     });
 
     resetPiece();
-  }, 500); 
+  
 }
 
 
