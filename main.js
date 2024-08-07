@@ -290,7 +290,7 @@ function update(time = 0) {
 
   dropCounter += deltaTime;
 
-  if (dropCounter > 100) {
+  if (dropCounter > 200) {
     piece.position.y++;
     dropCounter = 0;
 
@@ -449,17 +449,20 @@ function checkCollision () {
   })
 }
 
-function solidifyPiece () {
-  piece.shape.forEach((row, y) => {
-    row.forEach((value, x) => {
-      if (value === 1) {
-        board[y + piece.position.y][x + piece.position.x] = 1
-      }
-    })
-  })
+function solidifyPiece() {
+  setTimeout(() => {
+    piece.shape.forEach((row, y) => {
+      row.forEach((value, x) => {
+        if (value === 1) {
+          board[y + piece.position.y][x + piece.position.x] = 1;
+        }
+      });
+    });
 
-  resetPiece()
+    resetPiece();
+  }, 500); 
 }
+
 
 function resetPiece () {
   piece.position.x = Math.floor(BOARD_WIDTH / 2 - 2)
