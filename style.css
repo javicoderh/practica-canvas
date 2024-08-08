@@ -66,6 +66,20 @@
   left: 15%;
   margin-top: 20px;
   }
+
+  .nivel {
+    position: absolute;
+    top: 120px;
+    left: 15%;
+    margin-top: 20px;
+    }
+
+    .filas {
+      position: absolute;
+      top: 140px;
+      left: 15%;
+      margin-top: 20px;
+      }
   
   .titulo {
   position: absolute;

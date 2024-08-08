@@ -8,6 +8,8 @@ controles.style.display = 'none'
 const botonIzquierda = document.getElementById('izquierda')
 const botonAbajo = document.getElementById('abajo')
 const botonDerecha = document.getElementById('derecha')
+const nivelDisplay = document.getElementById('nivel')
+const filasDisplay = document.getElementById('filas')
 const $score = document.querySelector('span')
 const $section = document.querySelector('section')
 const app = document.querySelector('app')
@@ -22,6 +24,7 @@ audio.play();
 let velocidadX = 1;
 let velocidadY = 1;
 let friccion = 0.95
+
 
 const pausedMessage = document.createElement('h2');
 document.addEventListener('DOMContentLoaded', () => {
@@ -98,6 +101,10 @@ pausedMessage.style.display = 'none';
 document.body.appendChild(pausedMessage);
 
 let score = 0
+let filasCompletas = 0
+let nivel = Math.floor(filasCompletas / 4) +1
+let speed = 350 - (nivel *30)
+
 
 canvas.width = BLOCK_SIZE * BOARD_WIDTH
 canvas.height = BLOCK_SIZE * BOARD_HEIGHT
@@ -271,6 +278,8 @@ let dropCounter = 0;
 let lastTime = 0;
 let isPaused = false;
 
+ 
+
 function update(time = 0) {
   velocidadX *= friccion;
   velocidadY *= friccion;
@@ -290,7 +299,7 @@ function update(time = 0) {
 
   dropCounter += deltaTime;
 
-  if (dropCounter > 250) {
+  if (dropCounter > speed) {
     piece.position.y++;
     dropCounter = 0;
 
@@ -432,6 +441,7 @@ document.addEventListener('keydown', event => {
 document.addEventListener('keydown', event => {
   if (event.key === 'p' || event.key === 'P') {
     isPaused = !isPaused;
+    audio.play();
   }
 });
 
@@ -488,8 +498,16 @@ function removeRows () {
     const newRow = Array(BOARD_WIDTH).fill(0)
     board.unshift(newRow)
     score += 10
+    filasCompletas += 1
   })
+
+  nivel = Math.floor(filasCompletas / 4) +1;
+  speed = 350 - nivel * 30;
+filasDisplay.innerText = filasCompletas
+nivelDisplay.innerText = nivel
 }
+
+
 
 botonPausa.addEventListener('click', () => {
   isPaused = !isPaused
