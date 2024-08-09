@@ -280,7 +280,7 @@ let isPaused = false;
 
  
 
-function update(time = 0) {
+async function update(time = 0) {
   velocidadX *= friccion;
   velocidadY *= friccion;
 
@@ -305,8 +305,11 @@ function update(time = 0) {
 
     if (checkCollision()) {
       piece.position.y--;
+      // Espera 0.5 segundos antes de solidificar la pieza
+      await new Promise(resolve => setTimeout(resolve, 200));
       solidifyPiece();
       removeRows();
+      resetPiece();
     }
   }
 
@@ -467,9 +470,6 @@ function solidifyPiece() {
         }
       });
     });
-
-    resetPiece();
-  
 }
 
 
@@ -479,6 +479,8 @@ function resetPiece () {
   piece.shape = PIECES[Math.floor(Math.random() * PIECES.length)]
   if (checkCollision()) {
     window.alert('Game over!! Sorry!')
+    nivel = 1
+    filasCompletas = 0
     board.forEach((row) => row.fill(0))
     score = 0
   }
