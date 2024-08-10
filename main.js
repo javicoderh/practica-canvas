@@ -281,8 +281,6 @@ let isPaused = false;
  
 
 async function update(time = 0) {
-  velocidadX *= friccion;
-  velocidadY *= friccion;
 
   if (isPaused) {
     pausedMessage.style.display = 'block'; 
@@ -304,7 +302,7 @@ async function update(time = 0) {
 
     if (checkCollision()) {
       piece.position.y--;
-      await new Promise(resolve => setTimeout(resolve, speed));
+      await new Promise(resolve => setTimeout(resolve, (speed - 20)));
       solidifyPiece();
       removeRows();
       resetPiece();
@@ -520,25 +518,6 @@ function removeRows () {
 filasDisplay.innerText = filasCompletas
 nivelDisplay.innerText = nivel
 }
-
-function gameOver() {
-  for (let x = 0; x < BOARD_WIDTH; x++) {
-    let allOnes = true;
-    for (let y = 0; y < BOARD_HEIGHT; y++) {
-      if (board[y][x] !== 1) {
-        allOnes = false;
-        break;
-      }
-    }
-    if (allOnes) {
-      return true;
-    }
-  }
-  return false;
-}
-
-
-
 
 botonPausa.addEventListener('click', () => {
   isPaused = !isPaused
