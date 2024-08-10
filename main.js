@@ -291,7 +291,6 @@ async function update(time = 0) {
     audio.pause();
     return;
   }
-  
   pausedMessage.style.display = 'none'; 
 
   const deltaTime = time - lastTime;
@@ -305,8 +304,7 @@ async function update(time = 0) {
 
     if (checkCollision()) {
       piece.position.y--;
-      // Espera 0.5 segundos antes de solidificar la pieza
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise(resolve => setTimeout(resolve, speed));
       solidifyPiece();
       removeRows();
       resetPiece();
@@ -414,8 +412,6 @@ document.addEventListener('keydown', event => {
     piece.position.y++;
     if (checkCollision()) {
       piece.position.y--;
-        solidifyPiece();
-        removeRows();
     }
   }
 
@@ -463,13 +459,37 @@ function checkCollision () {
 }
 
 function solidifyPiece() {
-    piece.shape.forEach((row, y) => {
-      row.forEach((value, x) => {
-        if (value === 1) {
-          board[y + piece.position.y][x + piece.position.x] = 1;
+  let gameOverFlag = false;
+
+  piece.shape.forEach((row, y) => {
+    row.forEach((value, x) => {
+      if (value === 1) {
+        const boardX = x + piece.position.x;
+        const boardY = y + piece.position.y;
+        
+        if (boardY < BOARD_HEIGHT) {
+          board[boardY][boardX] = 1;
+
+          // Check if the piece is solidified in the first row
+          if (boardY === 0) {
+            gameOverFlag = true;
+          }
         }
-      });
+      }
     });
+  });
+
+  if (gameOverFlag) {
+    alert('Game over!! Sorry!');
+    resetGame(); 
+}
+}
+
+function resetGame() {
+  filasCompletas = 0
+  board.forEach((row) => row.fill(0))
+  nivel = Math.floor(filasCompletas / 4) +1
+  score = 0
 }
 
 
@@ -477,13 +497,6 @@ function resetPiece () {
   piece.position.x = Math.floor(BOARD_WIDTH / 2 - 2)
   piece.position.y = 0  
   piece.shape = PIECES[Math.floor(Math.random() * PIECES.length)]
-  if (checkCollision()) {
-    window.alert('Game over!! Sorry!')
-    nivel = 1
-    filasCompletas = 0
-    board.forEach((row) => row.fill(0))
-    score = 0
-  }
 }
 
 function removeRows () {
@@ -502,12 +515,28 @@ function removeRows () {
     score += 10
     filasCompletas += 1
   })
-
-  nivel = Math.floor(filasCompletas / 4) +1;
+  let nivel = Math.floor(filasCompletas / 4) +1
   speed = 350 - nivel * 30;
 filasDisplay.innerText = filasCompletas
 nivelDisplay.innerText = nivel
 }
+
+function gameOver() {
+  for (let x = 0; x < BOARD_WIDTH; x++) {
+    let allOnes = true;
+    for (let y = 0; y < BOARD_HEIGHT; y++) {
+      if (board[y][x] !== 1) {
+        allOnes = false;
+        break;
+      }
+    }
+    if (allOnes) {
+      return true;
+    }
+  }
+  return false;
+}
+
 
 
 
@@ -525,3 +554,11 @@ $section.addEventListener('click', () => {
   audio.volume = 0.4
   audio.play()
 })
+
+
+
+
+
+
+
+
