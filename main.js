@@ -103,7 +103,7 @@ document.body.appendChild(pausedMessage);
 let score = 0
 let filasCompletas = 0
 let nivel = Math.floor(filasCompletas / 4) +1
-let speed = 350 - (nivel *30)
+let speed = 400 - (nivel *30)
 
 
 canvas.width = BLOCK_SIZE * BOARD_WIDTH
@@ -302,7 +302,7 @@ async function update(time = 0) {
 
     if (checkCollision()) {
       piece.position.y--;
-      await new Promise(resolve => setTimeout(resolve, (speed - 20)));
+      await new Promise(resolve => setTimeout(resolve, (speed - 60)));
       solidifyPiece();
       removeRows();
       resetPiece();
